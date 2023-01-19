@@ -30,10 +30,7 @@ class UserResource extends JsonResource
             'his_manager' => $this->manager?->getName(),
             'confirmed' => $this->hasVerifiedEmail(),
             'contract_start_date' => $this->contract_start_date,
-            'birthday' => [
-                'date' => $this->birthday,
-                'age' => Carbon::parse($this->birthday)->age,
-            ],
+            'birthday' => $this->birthday,
             'phone' => $this->phone,
             'address' => $this->address,
             'postal_code' => $this->postal_code,
