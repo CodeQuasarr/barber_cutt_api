@@ -5,10 +5,13 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Notifications\CustomResetPasswordNotification;
 use Illuminate\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -43,6 +46,60 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+        static::addGlobalScope('orderDefault', function (Builder $builder) {
+            $builder
+                ->orderBy("name", "ASC");
+
+        });
+        static::addGlobalScope('withDefault', function (Builder $builder) {
+            $builder->with(["roles"]);
+        });
+    }
+
+    /**
+     * @return BelongsTo
+     */
+    public function manager(): BelongsTo
+    {
+        return $this->belongsTo(self::class, 'manager_id');
+    }
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        $name = '';
+        if ($this->name) {
+            $name = $this->name;
+        }
+        return $name;
+    }
+
+    //------------------------ User Scope ------------------------
+
+    public function scopeIsSuperAdministrator(): bool
+    {
+        return Auth::user()->hasRole('super_administrator');
+    }
+
+    public function scopeIsManager(): bool
+    {
+        return Auth::user()->hasRole('manager');
+    }
+
+    public function scopeIsManagerOF(Builder $query, $userId) {
+        return $query->where('manager_id', $userId);
+    }
+
+    public function scopeManagerTeams(Builder $query) {
+        return $query->where('manager_id', Auth::id());
+    }
+
 
     //------------------------ Methods ------------------------
     /**

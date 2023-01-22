@@ -116,7 +116,7 @@ class AuthController extends ApiController
             return response()->json([
                 'message' => 'Please verify your email address',
                 'has_verified_email' => false,
-            ], 401);
+            ], 200);
         }
         $token = $user->createToken('Personal Access Token')->plainTextToken;
         return response()->json([

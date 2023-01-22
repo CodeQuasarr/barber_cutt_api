@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Users;
 
 use App\Http\Controllers\Api\ApiController;
+use App\Http\Resources\UserCollection;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Models\Role;
@@ -26,11 +27,16 @@ class UserController extends ApiController
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return UserCollection
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if ($request->user()->isSuperAdministrator()) {
+            return new UserCollection(User::query()->whereKeyNot($request->user()->id)->paginate(10));
+        } elseif ($request->user()->isManager()) {
+            return new UserCollection(User::query()->managerTeams()->whereKeyNot($request->user()->id)->paginate(15));
+        }
+        return new UserCollection(User::query()->paginate(3));
     }
 
     /**
@@ -125,10 +131,17 @@ class UserController extends ApiController
      * Remove the specified resource from storage.
      *
      * @param User $user
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
-    public function destroy(User $user)
+    public function destroy(User $user): JsonResponse
     {
-        //
+        $success = $user->delete();
+        if (!$success) {
+            return $this->return500("Une erreur est survenue lors de la suppression de l'utilisateur");
+        }
+        return response()->json([
+            'success' => true,
+            'message' => "L'utilisateur a été supprimé avec success"
+        ], ResponseAlias::HTTP_CREATED);
     }
 }
