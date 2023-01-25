@@ -14,14 +14,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('products', function (Blueprint $table) {
+        Schema::create('haircut_services', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->text('description')->nullable(true);
-            $table->text('image')->nullable(true);
-            $table->foreignIdFor(Category::class)->nullable(true);
+            $table->string('description')->nullable(true);
+            $table->foreignIdFor(Category::class);
+            $table->integer('duration');
             $table->integer('price');
-            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }
@@ -33,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('products');
+        Schema::dropIfExists('haircut_services');
     }
 };
