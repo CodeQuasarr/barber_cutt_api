@@ -25,7 +25,7 @@ class Product extends Model
 
     public function price(): Attribute {
         return Attribute::make(
-            fn($value) => Str::replace('.', ',', $value) . ' €'
+            fn($value) => Str::replace('.', ',', $value) . '€'
         );
     }
 }

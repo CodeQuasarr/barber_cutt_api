@@ -3,21 +3,18 @@
 namespace App\Http\Controllers\Api\Shoppings;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Shoping\ProductCollection;
 use App\Http\Resources\Shopping\HaircutServiceCollection;
 use App\Http\Resources\Shopping\HaircutServiceResource;
 use App\Models\Category;
-use App\Models\HaircutService;
-use App\Models\Product;
+use App\Models\HairCutService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
-use Illuminate\Http\Response;
 
-class ProductController extends Controller
+class HaircutServiceController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
+     * @return AnonymousResourceCollection
      */
     public function index()
     {
@@ -26,9 +23,9 @@ class ProductController extends Controller
         $massageStyles = HairCutService::query()->where('category_id', Category::MASSAGE)->get();
 
         return HaircutServiceCollection::collection([
-            'hairStyles' => $hairStyles,
-            'beardStyles' => $beardStyles,
-            'massageStyles' => $massageStyles,
+            'hairs' => $hairStyles,
+            'beards' => $beardStyles,
+            'massages' => $massageStyles,
         ]);
     }
 
@@ -36,7 +33,7 @@ class ProductController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return Response
+     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
@@ -46,10 +43,10 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Product  $product
-     * @return Response
+     * @param  \App\Models\HairCutService  $hairCutService
+     * @return \Illuminate\Http\Response
      */
-    public function show(Product $product)
+    public function show(HairCutService $hairCutService)
     {
         //
     }
@@ -58,10 +55,10 @@ class ProductController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Product  $product
-     * @return Response
+     * @param  \App\Models\HairCutService  $hairCutService
+     * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Product $product)
+    public function update(Request $request, HairCutService $hairCutService)
     {
         //
     }
@@ -69,10 +66,10 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Product  $product
-     * @return Response
+     * @param  \App\Models\HairCutService  $hairCutService
+     * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy(HairCutService $hairCutService)
     {
         //
     }
