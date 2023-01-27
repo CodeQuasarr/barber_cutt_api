@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\Auth\AuthController;
 use App\Http\Controllers\Api\CountryController;
 use App\Http\Controllers\Api\Shoppings\HaircutServiceController;
 use App\Http\Controllers\Api\Shoppings\ProductController;
+use App\Http\Controllers\Api\Stripe\StripeController;
 use App\Http\Controllers\Api\Users\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,6 +18,9 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::get('/stripe/session', [StripeController::class, 'getCheckoutSession'])->name('stripe.session');
+
 Route::apiResource('products', ProductController::class);
 Route::apiResource('haircut-lists', HaircutServiceController::class);
 Route::get('countries', [CountryController::class, 'getCountry']);
