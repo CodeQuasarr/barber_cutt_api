@@ -18,7 +18,7 @@ class StripeController extends Controller
             'line_items' => [
                 [
                     'price_data' => [
-                        'currency' => 'usd',
+                        'currency' => 'eur',
                         'unit_amount' => 2000,
                         'product_data' => [
                             'name' => 'Stubborn Attachments',
@@ -32,6 +32,6 @@ class StripeController extends Controller
             'mode' => 'payment',
         ]);
 
-        return response()->json($checkout);
+        return response()->json(["id" => $checkout->id]);
     }
 }
