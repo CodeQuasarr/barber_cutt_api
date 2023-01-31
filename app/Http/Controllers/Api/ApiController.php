@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
+use Stripe\StripeClient;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class ApiController extends Controller
@@ -16,7 +19,6 @@ class ApiController extends Controller
     protected array $fillableFields;
     public function __construct()
     {
-        $this->model = new User();
         $this->fillableFields = $this->model->getFillable();
     }
 
@@ -144,5 +146,30 @@ class ApiController extends Controller
         }
 
         return $model;
+    }
+
+    protected function getCheckoutSession(Request $request): JsonResponse
+    {
+        $line_items = $request->get('line_items');
+//        dd($line_items['product_data']);
+        $stripe = new StripeClient(config('stripe.test_secret_key'));
+
+        $checkout = $stripe->checkout->sessions->create([
+            'success_url' => 'http://localhost:8080/success',
+            'cancel_url' => 'http://localhost:8080/cancel',
+            'line_items' => [
+                [
+                    'price_data' => [
+                        'currency' => 'eur',
+                        'unit_amount' => ((int)Str::replace('€', '', $line_items['unit_amount']))*100,
+                        'product_data' => $line_items['product_data'],
+                    ],
+                    'quantity' => 1,
+                ],
+            ],
+            'mode' => 'payment',
+        ]);
+
+        return response()->json(["id" => $checkout->id]);
     }
 }

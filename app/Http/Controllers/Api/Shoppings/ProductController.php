@@ -21,15 +21,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $hairStyles = HairCutService::query()->where('category_id', Category::HAIRECUT)->get();
-        $beardStyles = HairCutService::query()->where('category_id', Category::BEARD)->get();
-        $massageStyles = HairCutService::query()->where('category_id', Category::MASSAGE)->get();
+        // get product with poduct
 
-        return HaircutServiceCollection::collection([
-            'hairStyles' => $hairStyles,
-            'beardStyles' => $beardStyles,
-            'massageStyles' => $massageStyles,
-        ]);
+        return response()->json(Product::find(1)->with('orders')->get());
     }
 
     /**

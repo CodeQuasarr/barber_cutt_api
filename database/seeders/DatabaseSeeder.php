@@ -112,9 +112,9 @@ class DatabaseSeeder extends Seeder
             HaircutService::factory()->create($haircut);
         }
         // user has many orders and orders has many products and products has many orders
-        User::factory(30)
+        User::factory(3)
             ->has(
-                Order::factory(4)
+                Order::factory(2)
                     ->hasAttached(
                         Product::factory(3),
                         [

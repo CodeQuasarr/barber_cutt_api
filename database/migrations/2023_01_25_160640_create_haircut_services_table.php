@@ -18,9 +18,11 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('description')->nullable(true);
-            $table->foreignIdFor(Category::class);
+            // category_id is a foreign key to the categories table
+            $table->foreignId('haircut_service_category_id')->constrained('categories');
             $table->integer('price');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
