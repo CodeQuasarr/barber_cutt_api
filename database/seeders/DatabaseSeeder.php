@@ -6,6 +6,8 @@ namespace Database\Seeders;
 use App\Models\Haircuts\Haircut;
 use App\Models\Haircuts\HaircutCategory;
 use App\Models\Haircuts\HaircutReservation;
+use App\Models\OtherProduct\CategoryProduct;
+use App\Models\OtherProduct\Product;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -78,6 +80,161 @@ class DatabaseSeeder extends Seeder
                 "haircut_category_id" => 3,
             ]
         ];
+        $categoryProduct= [
+            [
+                "name" => "Womens Footwear",
+                "description" => "Womens Footwear",
+            ],
+            [
+                "name" => "Mens Footwear",
+                "description" => "Mens Footwear",
+            ],
+            [
+                "name" => "Womens Casualwear",
+                "description" => "Womens Casualwear",
+            ],
+            [
+                "name" => "Mens Casualwear",
+                "description" => "Mens Casualwear",
+            ],
+            [
+                "name" => "Childrens Footwear",
+                "description" => "Childrens Footwear",
+            ],
+            [
+                "name" => "Childrens Casualwear",
+                "description" => "Childrens Casualwear",
+            ],
+            [
+                "name" => "shampoing",
+                "description" => "SHampoing pour cheveux",
+            ]
+        ];
+        $products = [
+            [
+                "name" => "Almond Toe Court Shoes, Patent Black",
+                "description" => "Almond Toe Court Shoes, Patent Black",
+                "category_product_id" => 1,
+                "price" => 99.00,
+                "is_active" => true,
+            ],
+            [
+                "name" => "Suede Shoes, Blue",
+                "description" => "Suede Shoes, Blue",
+                "category_product_id" => 1,
+                "price" => 42.00,
+                "is_active" => true,
+            ],
+            [
+                "name" => "Leather Driver Saddle Loafers, Tan",
+                "description" => "Leather Driver Saddle Loafers, Tan",
+                "category_product_id" => 2,
+                "price" => 34.00,
+                "is_active" => true,
+            ],
+            [
+                "name" => "Flip Flops, Red",
+                "description" => "Flip Flops, Red",
+                "category_product_id" => 2,
+                "price" => 19.00,
+                "is_active" => true,
+            ],
+            [
+                "name" => "Flip Flops, Blue",
+                "description" => "Flip Flops, Blue",
+                "category_product_id" => 2,
+                "price" => 19.00,
+            ],
+            [
+                "name" => "Gold Button Cardigan, Black",
+                "description" => "Gold Button Cardigan, Black",
+                "category_product_id" => 3,
+                "price" => 167.00,
+                "is_active" => true,
+            ],
+            [
+                "name" => "Cotton Shorts, Medium Red",
+                "description" => "Cotton Shorts, Medium Red",
+                "category_product_id" => 3,
+                "price" => 30.00,
+                "is_active" => true,
+            ],
+            [
+                "name" => "Fine Stripe Short Sleeve￼Shirt, Grey",
+                "description" => "Fine Stripe Short Sleeve￼Shirt, Grey",
+                "category_product_id" => 4,
+                "price" => 49.99,
+                "is_active" => true,
+            ],
+            [
+                "name" => "Fine Stripe Short Sleeve￼Shirt, Green",
+                "description" => "Fine Stripe Short Sleeve￼Shirt, Green",
+                "category_product_id" => 4,
+                "price" => 49.99,
+                "is_active" => true,
+            ],
+            [
+                "name" => "Sharkskin Waistcoat, Charcoal",
+                "description" => "Sharkskin Waistcoat, Charcoal",
+                "category_product_id" => 5,
+                "price" => 75.00,
+                "is_active" => true,
+            ],
+            [
+                "name" => "Lightweight Patch Pocket￼Blazer, Deer",
+                "description" => "Lightweight Patch Pocket￼Blazer, Deer",
+                "category_product_id" => 5,
+                "price" => 175.50,
+                "is_active" => true,
+            ],
+            [
+                "name" => "Bird Print Dress, Black",
+                "description" => "Bird Print Dress, Black",
+                "category_product_id" => 6,
+                "price" => 270.00,
+                "is_active" => true,
+            ],
+            [
+                "name" => "Mid Twist Cut-Out Dress, Pink",
+                "description" => "Mid Twist Cut-Out Dress, Pink",
+                "category_product_id" => 6,
+                "price" => 540.00,
+                "is_active" => true,
+            ],
+            [
+                "name" => "Awesome product",
+                "description" => "Awesome product",
+                "category_product_id" => 7,
+                "price" => 75.00,
+                "is_active" => true,
+                "image" => "https://broaer.fr/wp-content/uploads/2022/03/27a6430a-3337-47ea-8db1-362ff3186d9c.png",
+            ],
+            [
+                "name" => "Paul Mitchell Shampooing",
+                "description" => "Paul Mitchell Shampooing 300ml Tea Tree Special Shampoo",
+                "category_product_id" => 7,
+                "price" => 175.50,
+                "is_active" => true,
+                "image" => "https://www.pro-duo.fr/on/demandware.static/-/Sites-produo-master-catalog/default/dw895c7d80/images/original/0009531115740_PNG_1_2.png",
+            ],
+            [
+                "name" => "Osmo Hair",
+                "description" => "Osmo Hair Wax 100ml HIDRA",
+                "category_product_id" => 7,
+                "price" => 270.00,
+                "is_active" => true,
+                "image" => "https://www.pro-duo.fr/dw/image/v2/BBTX_PRD/on/demandware.static/-/Sites-produo-master-catalog/default/dw4010c7ba/images/original/5035832100456_PNG_1_68%20copy%20-%20Copy.png?sw=1000&sh=1000",
+            ],
+            [
+                "name" => "Shampoing Cheveux Secset",
+                "description" => "Shampoing Cheveux Secset Peau 250ml HIDRA",
+                "category_product_id" => 7,
+                "price" => 540.00,
+                "is_active" => true,
+                "image" => "https://cdn.shopify.com/s/files/1/0653/6003/6082/products/ShampoingCheveuxSecsetPeau250mlHIDRA.png?v=1658005823",
+            ],
+        ];
+
         $this->command->info('Haircut categories seeded');
         foreach ($haircutCategories as $category) {
             HaircutCategory::factory()->create($category);
@@ -86,7 +243,17 @@ class DatabaseSeeder extends Seeder
         foreach ($haircutLists as $haircut) {
             Haircut::factory()->create($haircut);
         }
+        $this->command->info('Ohter categories products seeded!');
+        foreach ($categoryProduct as $category) {
+            CategoryProduct::factory()->create($category);
+        }
+        $this->command->info('Ohter products seeded!');
+        foreach ($products as $product) {
+            Product::factory()->create($product);
+        }
+
         $this->command->info('Haircut reservations seeded!');
         HaircutReservation::factory(3)->create();
+
     }
 }

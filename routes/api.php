@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\Haircuts\HaircutController;
 use App\Http\Controllers\Api\Haircuts\HaircutReservationController;
+use App\Http\Controllers\Api\Home\HomeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -15,6 +16,8 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
+Route::get('/random-shampoos', [HomeController::class, 'randomShampoos']);
 
 Route::get('/unavailable-hours/{haircutService}', [HaircutReservationController::class, 'getHaircutReservationTimesByDate']);
 Route::apiResource('haircuts/reservation', HaircutReservationController::class);
