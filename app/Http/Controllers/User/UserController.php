@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\UserCollection;
 use App\Models\Haircuts\Haircut;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,6 +19,9 @@ class UserController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
+        if ($request->user()->isSuperAdministrator()) {
+            return response()->json(User::query()->whereKeyNot($request->user()->id)->paginate(10));
+        }
         $allUserReservations = Haircut::getHaircutsWithReservationsFromUser(Auth::id());
         // Return the response
         return response()->json($allUserReservations);

@@ -8,6 +8,7 @@ use App\Models\Haircuts\HaircutCategory;
 use App\Models\Haircuts\HaircutReservation;
 use App\Models\OtherProduct\CategoryProduct;
 use App\Models\OtherProduct\Product;
+use App\Models\Users\Role;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -19,6 +20,18 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $roles = [
+            [ 'name' => 'super_administrator'],
+            [ 'name' => 'administrator'],
+            [ 'name' => 'Hairdresser'],
+            [ 'name' => 'Manager'],
+            [ 'name' => 'Client'],
+        ];
+
+        foreach ($roles as $role) {
+            Role::create($role);
+        }
+
         $haircutCategories = [
             [ 'name' => 'Beard', 'description' => 'Beard services' ],
             [ 'name' => 'Haircut', 'description' => 'Haircut services' ],

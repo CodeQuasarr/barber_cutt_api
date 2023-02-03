@@ -7,6 +7,7 @@ use App\Http\Resources\User\UserResource;
 use App\Models\Haircuts\Haircut;
 use App\Models\User;
 use App\Models\Users\PasswordReset;
+use App\Models\Users\Role;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -50,7 +51,7 @@ class AuthController extends ApiController
             return $this->return500("Une erreur est survenue lors de l'inscription de l'utilisateur");
         }
         // Add the user to the default role
-//        $userModel->assignRole(Role::CLIENT);
+        $userModel->assignRole(Role::CLIENT);
         // send email verification
         $userModel->sendPasswordResetNotification(Str::random(60));
         $userModel->sendEmailVerificationNotification();

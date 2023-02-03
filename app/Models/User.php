@@ -10,11 +10,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, MustVerifyEmail;
+    use HasApiTokens, HasFactory, Notifiable, SoftDeletes, MustVerifyEmail, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -61,4 +63,10 @@ class User extends Authenticatable
     {
         $this->notify(new CustomVerifyEmailNotification());
     }
+
+    public function scopeIsSuperAdministrator(): bool
+    {
+        return Auth::user()->hasRole('super_administrator');
+    }
+
 }
