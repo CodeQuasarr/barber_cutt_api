@@ -52,7 +52,6 @@ class AuthController extends ApiController
         // Add the user to the default role
 //        $userModel->assignRole(Role::CLIENT);
         // send email verification
-        $userModel->sendPasswordResetNotification(Str::random(60));
         $userModel->sendEmailVerificationNotification();
         return $this->sendResponse('Un mail de confirmation vous a été envoyé', 201);
     }
