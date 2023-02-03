@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\Haircuts\HaircutController;
 use App\Http\Controllers\Api\Haircuts\HaircutReservationController;
 use App\Http\Controllers\Api\Home\HomeController;
 use App\Http\Controllers\Api\Mail\MailController;
+use App\Http\Controllers\User\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::get('/test', [HaircutController::class, 'getHaircutsWithReservationsFromUser']);
 Route::prefix('auth')->group( function () {
 
     Route::post('/forgot-password', [AuthController::class, 'forgotPassword']);
@@ -37,4 +39,6 @@ Route::apiResource('haircuts', HaircutController::class);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/auth/logout', [AuthController::class, 'logout']);
+    Route::post('/stripe/checkout', [HaircutReservationController::class, 'getCheckoutSession'])->name('stripe.session');
+    Route::apiResource('users', UserController::class);
 });

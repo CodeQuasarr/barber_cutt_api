@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Api\Haircuts;
 
 use App\Http\Controllers\Api\ApiController;
+use App\Http\Resources\Haircuts\HaircutReservationRessource;
+use App\Models\Haircuts\Haircut;
 use App\Models\HairCuts\HaircutReservation;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class HaircutReservationController extends ApiController
@@ -42,24 +45,18 @@ class HaircutReservationController extends ApiController
         // Set data to the model
         $haircutReservation = $this->fillModel(new HaircutReservation(), $fields);
         // Save the model
-        $success = $haircutReservation->save();
-        // Check if the model has been saved
-        if (!$success) {
-            return $this->return500();
-        }
+        $haircutReservation->save();
+
+        $allUserReservations = Haircut::getHaircutsWithReservationsFromUser($request->user_id);
+
         // Return the response
-        return response()->json(
-            [
-                'user_id' => $haircutReservation->getKey(),
-                'success' => true,
-                'message' => ''
-            ], ResponseAlias::HTTP_CREATED);
+        return response()->json($allUserReservations);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\HairCuts\HaircutReservation  $haircutReservation
+     * @param HaircutReservation $haircutReservation
      * @return \Illuminate\Http\Response
      */
     public function show(HaircutReservation $haircutReservation)
@@ -71,7 +68,7 @@ class HaircutReservationController extends ApiController
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param  \App\Models\HairCuts\HaircutReservation  $haircutReservation
+     * @param HaircutReservation $haircutReservation
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, HaircutReservation $haircutReservation)
@@ -82,12 +79,14 @@ class HaircutReservationController extends ApiController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\HairCuts\HaircutReservation  $haircutReservation
-     * @return \Illuminate\Http\Response
+     * @param HaircutReservation $haircutReservation
+     * @return JsonResponse
      */
     public function destroy(HaircutReservation $haircutReservation)
     {
-        //
+        // Delete the model from the database
+        $haircutReservation->delete();
+        return response()->json(['message' => "$haircutReservation->id deleted", 'code' => ResponseAlias::HTTP_OK]);
     }
 
     /**
@@ -104,4 +103,5 @@ class HaircutReservationController extends ApiController
 
         return response()->json($haircutReservationTimes);
     }
+
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Api\ApiController;
 use App\Http\Resources\User\UserResource;
+use App\Models\Haircuts\Haircut;
 use App\Models\User;
 use App\Models\Users\PasswordReset;
 use Illuminate\Http\JsonResponse;
@@ -83,14 +84,18 @@ class AuthController extends ApiController
                     'has_verified_email' => false,
                 ], 401);
         }
+        Auth::login($user, true);
         // create a token for the user
         $token = $user->createToken('Personal Access Token')->plainTextToken;
+
+        $haircutReservations = Haircut::getHaircutsWithReservationsFromUser($user->id);
 
         // return the user and the token
         return response()->json([
             'user' => UserResource::make($user),
             'token' => $token,
             'token_type' => 'Bearer',
+            'HaircutCart' => $haircutReservations,
         ], 200);
     }
 
@@ -188,5 +193,19 @@ class AuthController extends ApiController
         return response()->json([
             'message' => "Lien de vérification d'email envoyé sur votre adresse e-mail"
         ], 200);
+    }
+
+    // set session for user logged in
+    public function setSession(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|integer',
+        ]);
+        $user = User::query()->where('id', $request->user_id)->first();
+        if (!$user) {
+            return $this->return404("Utilisateur introuvable");
+        }
+        Auth::login($user, true);
+        return $this->sendResponse('Session mise à jour', 200);
     }
 }

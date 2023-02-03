@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
+use Stripe\StripeClient;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 
 class ApiController
@@ -116,5 +117,25 @@ class ApiController
     public function return503(string $message = "Service Unavailable"): JsonResponse
     {
         return response()->json(['code' => ResponseAlias::HTTP_SERVICE_UNAVAILABLE, 'message' => $message], ResponseAlias::HTTP_SERVICE_UNAVAILABLE);
+    }
+
+    public function getCheckoutSession(Request $request) {
+        $priceData = $request->get('price_data');
+//        dd($line_items['product_data']);
+        $stripe = new StripeClient(config('stripe.test_secret_key'));
+
+        $checkout = $stripe->checkout->sessions->create([
+            'success_url' => 'http://localhost:8080/success',
+            'cancel_url' => 'http://localhost:8080/mon-panier',
+            'line_items' => [
+                [
+                    'price_data' => $priceData,
+                    'quantity' => 1,
+                ],
+            ],
+            'mode' => 'payment',
+        ]);
+
+        return response()->json(["id" => $checkout->id]);
     }
 }

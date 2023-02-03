@@ -7,6 +7,7 @@ use App\Models\HairCuts\Haircut;
 use App\Models\Haircuts\HaircutCategory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HaircutController extends Controller
 {
@@ -66,10 +67,29 @@ class HaircutController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  \App\Models\HairCuts\Haircut  $haircut
-     * @return \Illuminate\Http\Response
+     * @return JsonResponse
      */
     public function destroy(Haircut $haircut)
     {
-        //
+        // revome all reservations for this haircut and then delete the haircut itself
+        $haircut->reservations()->delete();
+        return response()->json(['message' => 'Haircut deleted', 'code' => 200]);
     }
+
+    // get the haircut with user reservations
+    public function getHaircutWithReservations($id): JsonResponse
+    {
+        $haircut = Haircut::query()->with('reservations.user')->find($id);
+        return response()->json($haircut);
+    }
+
+    // from a user's id, get the list of haircuts on which the user has made a reservation
+    public function getHaircutsWithReservationsFromUser(): JsonResponse
+    {
+        $haircuts = Haircut::query()->with('reservations')->whereHas('reservations', function ($query) {
+            $query->where('user_id', 1);
+        })->get(['id', 'name', 'price', 'description']);
+        return response()->json(["id" => Auth::id()]);
+    }
+
 }
